@@ -27,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
     return list;
   }
 
-  Widget listViewWidget(List<Quote> quote) {
+  Widget listView(List<Quote> quote) {
     return Container(
       child: ListView.builder(
           itemCount: quote.length,
@@ -37,17 +37,20 @@ class _DashboardState extends State<Dashboard> {
               child: ListTile(
                 leading: Text('${quote[position].id}', style: TextStyle(fontWeight: FontWeight.bold),),
                 title: Text('${quote[position].quote}'),
-                //onTap: () => _onTapItem(context, article[position]),
               ),
             );
           }),
     );
   }
 
-//  void _onTapItem(BuildContext context, Article article) {
-//    Navigator.of(context).push(MaterialPageRoute(
-//        builder: (BuildContext context) => NewsDetails(article, widget.title)));
-//  }
+  Widget _buildBody() {
+    return FutureBuilder(
+      future: getData(),
+      builder: (context, snapshot) {
+        return snapshot.data != null ? listView(snapshot.data) : Center(child: CircularProgressIndicator());
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +58,13 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         title: Text("chickfights"),
       ),
-      body: FutureBuilder(
-          future: getData(),
-          builder: (context, snapshot) {
-            return snapshot.data != null ? listViewWidget(snapshot.data) : Center(child: CircularProgressIndicator());
-          }),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: _buildBody(),
+          )
+        ],
+      )
     );
   }
 }
