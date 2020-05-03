@@ -14,7 +14,7 @@ class _DashboardState extends State<Dashboard> {
 
   Future<List<Quote>> getData() async {
     List<Quote> list;
-    String link = "https://raw.githubusercontent.com/chickfights/qdb/master/quotes.json";
+    String link = "https://raw.githubusercontent.com/trickdev/qdb/master/quotes.json";
     var res = await http.get(Uri.encodeFull(link), headers: {"Accept": "application/json"});
 
     if(res.statusCode == 200) {
